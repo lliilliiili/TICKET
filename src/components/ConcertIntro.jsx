@@ -74,7 +74,7 @@ const ConcertIntro = () => {
             alt="歌手照片" 
             className="artist-image"
           />
-          <h2>好樂團 GOOD BAND</h2>
+          <h2>好樂團7 GOOD BAND</h2>
           <p className="artist-description">
             知名歌手簡介和成就描述...
           </p>
