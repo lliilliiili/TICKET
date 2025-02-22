@@ -1,0 +1,20 @@
+# 忽略 `node_modules` 資料夾
+node_modules/
+
+# 忽略環境變數檔案
+.env
+
+# 忽略日誌檔案
+logs/
+*.log
+
+# 忽略打包後的 `dist` 目錄
+dist/
+build/
+
+# 忽略 IDE 設定檔案
+.vscode/
+.idea/
+
+# 忽略 `package-lock.json`（如果你只用 `yarn`）
+package-lock.json
