@@ -20,6 +20,20 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
     e.preventDefault();
     setError('');
 
+    // 檢查是否為管理員帳號
+    if (formData.email === 'hank' && formData.password === 'hank') {
+      const adminUser = {
+        id: 'admin',
+        username: 'hank',
+        email: 'hank',
+        isAdmin: true
+      };
+      localStorage.setItem('user', JSON.stringify(adminUser));
+      onLogin(adminUser);
+      onClose();
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3001/api/login', {
         method: 'POST',
@@ -52,13 +66,13 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>電子信箱</label>
+            <label>帳號</label>
             <input
-              type="email"
+              type="text"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="請輸入電子信箱"
+              placeholder="請輸入帳號或信箱"
             />
           </div>
 

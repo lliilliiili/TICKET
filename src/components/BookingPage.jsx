@@ -130,7 +130,15 @@ const BookingPage = () => {
             訂票紀錄
           </button>
           <div className="user-info">
-            <span>歡迎，{user.username}</span>
+            <span>
+              {user.isAdmin ? (
+                <span className="admin-badge">
+                  👑 管理員：{user.username}
+                </span>
+              ) : (
+                `歡迎，${user.username}`
+              )}
+            </span>
             <button className="logout-button" onClick={handleLogout}>
               登出
             </button>

@@ -30,7 +30,15 @@ const ConcertIntro = () => {
       <div className="header-buttons">
         {user ? (
           <div className="user-info">
-            <span>歡迎，{user.username}</span>
+            <span>
+              {user.isAdmin ? (
+                <span className="admin-badge">
+                  👑 管理員：{user.username}
+                </span>
+              ) : (
+                `歡迎，${user.username}`
+              )}
+            </span>
             <button 
               className="logout-button" 
               onClick={() => {
