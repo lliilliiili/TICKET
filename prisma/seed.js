@@ -3,10 +3,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   const areas = [
-    { id: 'rock', name: '·nºu°Ï', price: 3800, remaining: 100 },
-    { id: 'a', name: '®y¦ì°ÏA', price: 3200, remaining: 200 },
-    { id: 'b', name: '®y¦ì°ÏB', price: 2800, remaining: 300 },
-    { id: 'c', name: '®y¦ì°ÏC', price: 2200, remaining: 400 }
+    { id: 'rock', name: 'æ–æ»¾å€', price: 3800, remaining: 100 },
+    { id: 'a', name: 'åº§ä½å€A', price: 3200, remaining: 200 },
+    { id: 'b', name: 'åº§ä½å€B', price: 2800, remaining: 300 },
+    { id: 'c', name: 'åº§ä½å€C', price: 2200, remaining: 400 }
   ];
 
   for (const area of areas) {
