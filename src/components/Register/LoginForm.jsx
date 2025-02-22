@@ -8,14 +8,6 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
   });
   const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,12 +20,12 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
         email: 'hank',
         isAdmin: true
       };
-      localStorage.setItem('user', JSON.stringify(adminUser));
       onLogin(adminUser);
       onClose();
       return;
     }
 
+    // 如果不是管理員，則進行一般登入
     try {
       const response = await fetch('http://localhost:3001/api/login', {
         method: 'POST',
@@ -46,7 +38,6 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data.user));
         onLogin(data.user);
         onClose();
       } else {
@@ -55,6 +46,14 @@ const LoginForm = ({ onClose, switchToRegister, onLogin }) => {
     } catch (err) {
       setError('伺服器錯誤，請稍後再試');
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
