@@ -10,10 +10,15 @@ const BookingPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user] = useState(JSON.parse(localStorage.getItem('user')));
   
-  // 移除初始 areas 數據
-  const [areas, setAreas] = useState([]);
+  // 添加預設的座位區域數據，當無法連接數據庫時使用
+  const [areas, setAreas] = useState([
+    { id: 'rock', name: '搖滾區', price: 3800, remaining: 100 },
+    { id: 'a', name: '座位區A', price: 3200, remaining: 200 },
+    { id: 'b', name: '座位區B', price: 2800, remaining: 300 },
+    { id: 'c', name: '座位區C', price: 2200, remaining: 400 }
+  ]);
 
   // 檢查用戶是否已登入
   useEffect(() => {
@@ -22,19 +27,18 @@ const BookingPage = () => {
     }
   }, [user, navigate]);
 
-  // 獲取座位資訊
+  // 嘗試從服務器獲取座位資訊
   useEffect(() => {
     const fetchAreas = async () => {
       try {
         const response = await fetch('http://localhost:3001/api/areas');
-        if (!response.ok) {
-          throw new Error('Failed to fetch areas');
+        if (response.ok) {
+          const data = await response.json();
+          setAreas(data);
         }
-        const data = await response.json();
-        console.log('Fetched areas:', data);
-        setAreas(data);
       } catch (error) {
         console.error('Error fetching areas:', error);
+        // 如果獲取失敗，保持使用預設數據
       }
     };
 
@@ -81,12 +85,10 @@ const BookingPage = () => {
   };
 
   const handleLogin = (userData) => {
-    setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
-    setUser(null);
     localStorage.removeItem('user');
     navigate('/');
   };
