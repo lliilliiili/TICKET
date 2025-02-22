@@ -8,15 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MySQL é€£æ¥é…ç½®ï¼ˆè«‹æ ¹æ“šæ‚¨çš„è¨­ç½®ä¿®æ”¹ï¼‰
+// MySQL ?????¥é??ç½®ï??è«???¹æ????¨ç??è¨­ç½®ä¿®æ?¹ï??
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root',          // æ‚¨çš„ MySQL ç”¨æˆ¶å
-  password: 'js15021502',    // æ”¹æˆæ‚¨çš„ MySQL å¯†ç¢¼
+  user: 'root',          // ??¨ç?? MySQL ??¨æ?¶å??
+  password: 'js15021502',    // ??¹æ????¨ç?? MySQL å¯?ç¢?
   database: 'concert_booking'
 });
 
-// æ¸¬è©¦æ•¸æ“šåº«é€£æ¥
+// æ¸¬è©¦??¸æ??åº«é?????
 connection.connect((err) => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
@@ -25,7 +25,7 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-// å‰µå»ºç”¨æˆ¶è¡¨
+// ??µå»º??¨æ?¶è¡¨
 connection.query(`
   CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +36,7 @@ connection.query(`
   )
 `);
 
-// å‰µå»ºåº§ä½å€åŸŸè¡¨
+// ??µå»ºåº§ä????????è¡?
 connection.query(`
   CREATE TABLE IF NOT EXISTS areas (
     id VARCHAR(50) PRIMARY KEY,
@@ -46,7 +46,7 @@ connection.query(`
   )
 `);
 
-// å‰µå»ºè¨‚ç¥¨è¨˜éŒ„è¡¨
+// ??µå»ºè¨?ç¥¨è?????è¡?
 connection.query(`
   CREATE TABLE IF NOT EXISTS bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,20 +59,20 @@ connection.query(`
   )
 `);
 
-// æª¢æŸ¥æ˜¯å¦éœ€è¦åˆå§‹åŒ–åº§ä½æ•¸æ“š
+// æª¢æ?¥æ?¯å?¦é??è¦????å§????åº§ä????¸æ??
 connection.query('SELECT * FROM areas', (err, results) => {
   if (err) {
     console.error('Error checking areas:', err);
     return;
   }
 
-  // å¦‚æœè¡¨æ˜¯ç©ºçš„ï¼Œæ·»åŠ åˆå§‹æ•¸æ“š
+  // å¦????è¡¨æ?¯ç©º???ï¼?æ·»å?????å§???¸æ??
   if (results.length === 0) {
     const initialAreas = [
-      { id: 'rock', name: 'æ–æ»¾å€', price: 3800, remaining: 100 },
-      { id: 'a', name: 'åº§ä½å€A', price: 3200, remaining: 200 },
-      { id: 'b', name: 'åº§ä½å€B', price: 2800, remaining: 300 },
-      { id: 'c', name: 'åº§ä½å€C', price: 2200, remaining: 400 }
+      { id: 'rock', name: '???æ»¾å??', price: 3800, remaining: 100 },
+      { id: 'a', name: 'åº§ä?????A', price: 3200, remaining: 200 },
+      { id: 'b', name: 'åº§ä?????B', price: 2800, remaining: 300 },
+      { id: 'c', name: 'åº§ä?????C', price: 2200, remaining: 400 }
     ];
 
     connection.query(
@@ -89,90 +89,90 @@ connection.query('SELECT * FROM areas', (err, results) => {
   }
 });
 
-// è¨»å†Š API
+// è¨»å?? API
 app.post('/api/register', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // æª¢æŸ¥éƒµç®±æ˜¯å¦å·²å­˜åœ¨
+    // æª¢æ?¥é?µç®±??¯å?¦å·²å­????
     const [existingUsers] = await connection.promise().query(
       'SELECT * FROM users WHERE email = ?',
       [email]
     );
 
     if (existingUsers.length > 0) {
-      return res.status(400).json({ message: 'æ­¤ä¿¡ç®±å·²è¢«è¨»å†Š' });
+      return res.status(400).json({ message: 'æ­¤ä¿¡ç®±å·²è¢«è¨»???' });
     }
 
-    // åŠ å¯†å¯†ç¢¼
+    // ???å¯?å¯?ç¢?
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // æ’å…¥æ–°ç”¨æˆ¶
+    // ?????¥æ?°ç?¨æ??
     await connection.promise().query(
       'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
       [username, email, hashedPassword]
     );
 
-    res.status(201).json({ message: 'è¨»å†ŠæˆåŠŸ' });
+    res.status(201).json({ message: 'è¨»å????????' });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'ä¼ºæœå™¨éŒ¯èª¤' });
+    res.status(500).json({ message: 'ä¼ºæ????¨é?¯èª¤' });
   }
 });
 
-// ç™»å…¥ API
+// ??»å?? API
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // æŸ¥æ‰¾ç”¨æˆ¶
+    // ??¥æ?¾ç?¨æ??
     const [users] = await connection.promise().query(
       'SELECT * FROM users WHERE email = ?',
       [email]
     );
 
     if (users.length === 0) {
-      return res.status(401).json({ message: 'ä¿¡ç®±æˆ–å¯†ç¢¼éŒ¯èª¤' });
+      return res.status(401).json({ message: 'ä¿¡ç®±???å¯?ç¢¼é?¯èª¤' });
     }
 
     const user = users[0];
 
-    // é©—è­‰å¯†ç¢¼
+    // é©?è­?å¯?ç¢?
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      return res.status(401).json({ message: 'ä¿¡ç®±æˆ–å¯†ç¢¼éŒ¯èª¤' });
+      return res.status(401).json({ message: 'ä¿¡ç®±???å¯?ç¢¼é?¯èª¤' });
     }
 
-    // ä¸è¦è¿”å›å¯†ç¢¼
+    // ä¸?è¦?è¿????å¯?ç¢?
     const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'ä¼ºæœå™¨éŒ¯èª¤' });
+    res.status(500).json({ message: 'ä¼ºæ????¨é?¯èª¤' });
   }
 });
 
-// ç²å–åº§ä½å€åŸŸè³‡è¨Š
+// ??²å??åº§ä????????è³?è¨?
 app.get('/api/areas', async (req, res) => {
   try {
     const [areas] = await connection.promise().query('SELECT * FROM areas');
     res.json(areas);
   } catch (error) {
     console.error('Error fetching areas:', error);
-    res.status(500).json({ message: 'ä¼ºæœå™¨éŒ¯èª¤' });
+    res.status(500).json({ message: 'ä¼ºæ????¨é?¯èª¤' });
   }
 });
 
-// æ·»åŠ è¨‚ç¥¨è¨˜éŒ„
+// æ·»å??è¨?ç¥¨è?????
 app.post('/api/bookings', async (req, res) => {
   const { userId, areaId, quantity } = req.body;
 
   try {
-    // é–‹å§‹äº‹å‹™
+    // ???å§?äº????
     await connection.promise().beginTransaction();
 
-    // æª¢æŸ¥åº§ä½æ˜¯å¦è¶³å¤ 
+    // æª¢æ?¥åº§ä½???¯å?¦è¶³å¤?
     const [areas] = await connection.promise().query(
       'SELECT * FROM areas WHERE id = ? AND remaining >= ?',
       [areaId, quantity]
@@ -180,35 +180,35 @@ app.post('/api/bookings', async (req, res) => {
 
     if (areas.length === 0) {
       await connection.promise().rollback();
-      return res.status(400).json({ message: 'åº§ä½ä¸è¶³' });
+      return res.status(400).json({ message: 'åº§ä??ä¸?è¶?' });
     }
 
     const area = areas[0];
 
-    // æ›´æ–°å‰©é¤˜åº§ä½æ•¸
+    // ??´æ?°å?©é??åº§ä?????
     await connection.promise().query(
       'UPDATE areas SET remaining = remaining - ? WHERE id = ?',
       [quantity, areaId]
     );
 
-    // æ·»åŠ è¨‚ç¥¨è¨˜éŒ„
+    // æ·»å??è¨?ç¥¨è?????
     await connection.promise().query(
       'INSERT INTO bookings (user_id, area_name, price, quantity) VALUES (?, ?, ?, ?)',
       [userId, area.name, area.price, quantity]
     );
 
-    // æäº¤äº‹å‹™
+    // ???äº¤ä?????
     await connection.promise().commit();
 
-    res.status(201).json({ message: 'è¨‚ç¥¨æˆåŠŸ' });
+    res.status(201).json({ message: 'è¨?ç¥¨æ?????' });
   } catch (error) {
     await connection.promise().rollback();
     console.error('Booking error:', error);
-    res.status(500).json({ message: 'ä¼ºæœå™¨éŒ¯èª¤' });
+    res.status(500).json({ message: 'ä¼ºæ????¨é?¯èª¤' });
   }
 });
 
-// ç²å–ç”¨æˆ¶çš„è¨‚ç¥¨è¨˜éŒ„
+// ??²å????¨æ?¶ç??è¨?ç¥¨è?????
 app.get('/api/bookings/:userId', async (req, res) => {
   try {
     const [bookings] = await connection.promise().query(
@@ -218,20 +218,20 @@ app.get('/api/bookings/:userId', async (req, res) => {
     res.json(bookings);
   } catch (error) {
     console.error('Error fetching bookings:', error);
-    res.status(500).json({ message: 'ä¼ºæœå™¨éŒ¯èª¤' });
+    res.status(500).json({ message: 'ä¼ºæ????¨é?¯èª¤' });
   }
 });
 
-// æ·»åŠ é‡ç½®åŠŸèƒ½çš„ API
+// æ·»å?????ç½®å????½ç?? API
 app.post('/api/reset', async (req, res) => {
   try {
-    // é–‹å§‹äº‹å‹™
+    // ???å§?äº????
     await connection.promise().beginTransaction();
 
-    // æ¸…ç©ºè¨‚ç¥¨è¨˜éŒ„
+    // æ¸?ç©ºè??ç¥¨è?????
     await connection.promise().query('DELETE FROM bookings');
 
-    // é‡ç½®åº§ä½æ•¸é‡
+    // ???ç½®åº§ä½???¸é??
     const resetAreas = [
       { id: 'rock', remaining: 100 },
       { id: 'a', remaining: 200 },
@@ -246,13 +246,13 @@ app.post('/api/reset', async (req, res) => {
       );
     }
 
-    // æäº¤äº‹å‹™
+    // ???äº¤ä?????
     await connection.promise().commit();
-    res.json({ message: 'ç³»çµ±å·²é‡ç½®' });
+    res.json({ message: 'ç³»çµ±å·²é??ç½?' });
   } catch (error) {
     await connection.promise().rollback();
     console.error('Reset error:', error);
-    res.status(500).json({ message: 'é‡ç½®å¤±æ•—' });
+    res.status(500).json({ message: '???ç½®å¤±???' });
   }
 });
 
