@@ -71,12 +71,12 @@ const ConcertIntro = () => {
         <div className="artist-info">
           <img 
             src="/artist-photo.jpg" 
-            alt="歌手照片" 
+            alt="藝人照片" 
             className="artist-image"
           />
-          <h2>好樂團7 GOOD BAND</h2>
+          <h2>超人氣 GOOD BAND</h2>
           <p className="artist-description">
-            知名歌手簡介和成就描述...
+            年度最受歡迎的搖滾天團...
           </p>
         </div>
 
@@ -85,7 +85,7 @@ const ConcertIntro = () => {
           <ul>
             <li>演出時間：2024年8月15日 19:30</li>
             <li>演出地點：台北小巨蛋</li>
-            <li>開放入場：18:30</li>
+            <li>入場時間：18:30</li>
             <li>票價資訊：
               <ul>
                 <li>搖滾區 NT$3800</li>
